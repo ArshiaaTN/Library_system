@@ -1,0 +1,37 @@
+<h2>Add New Book</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <p>
+        {{ form.title.label_tag }}<br>
+        {{ form.title }}<br>
+        {{ form.title.errors }}
+    </p>
+
+    <p>
+        {{ form.price.label_tag }}<br>
+        {{ form.price }}<br>
+        {{ form.price.errors }}
+    </p>
+
+    <p>
+        {{ form.published_date.label_tag }}<br>
+        {{ form.published_date }}<br>
+        {{ form.published_date.errors }}
+    </p>
+
+    <p>
+        {{ form.category.label_tag }}auth_user<br>
+        {{ form.category }}<br>
+        {{ form.category.errors }}
+    </p>
+
+    <p>
+        {{ form.authors_input.label_tag }}<br>
+        {{ form.authors_input }}<br>
+        {{ form.authors_input.errors }}
+    </p>
+
+    <button type="submit">Add Book</button>
+</form>

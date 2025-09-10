@@ -1,0 +1,20 @@
+<h2>Book List</h2>
+
+<form method="GET" style="margin-bottom: 20px;">
+    {{ form.query.label_tag }}
+    {{ form.query }}
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+    {% for book in books %}
+        <li>
+            {{ book.title }} - Authors:
+            {% for author in book.authors.all %}
+                {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </li>
+    {% empty %}
+        <li>No books found.</li>
+    {% endfor %}
+</ul>

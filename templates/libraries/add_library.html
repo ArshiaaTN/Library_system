@@ -1,0 +1,7 @@
+<h2>Add New Library</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Library</button>
+</form>

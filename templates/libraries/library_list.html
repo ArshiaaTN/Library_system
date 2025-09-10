@@ -1,0 +1,13 @@
+<h2>Libraries</h2>
+
+<ul>
+    {% for library in libraries %}
+        <li>
+            <a href="{% url 'library_detail' library.pk %}">{{ library.name }}</a>
+        </li>
+    {% empty %}
+        <li>No libraries yet.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'add_library' %}">Add new library</a>

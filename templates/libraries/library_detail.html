@@ -1,0 +1,25 @@
+<h2>Library: {{ library.name }}</h2>
+
+<h3>Books in this library:</h3>
+<ul>
+    {% for book in library.books.all %}
+        <li>{{ book.title }} by
+            {% for author in book.authors.all %}
+                {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            (Category: {{ book.category.name }})
+        </li>
+    {% empty %}
+        <li>No books in this library yet.</li>
+    {% endfor %}
+</ul>
+
+<h3>Add a new book to this library:</h3>
+<form method="POST" action="{% url 'add_book_to_library' library.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Book</button>
+</form>
+
+<br>
+<a href="{% url 'library_list' %}">Back to libraries</a>

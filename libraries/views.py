@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from .models import Library
 from .forms import LibraryForm
@@ -7,6 +8,16 @@ from books.forms import BookForm
 
 def library_detail(request, pk):
     library = get_object_or_404(Library, pk=pk)
+    books = library.books.all()
+
+    query = request.GET.get('q')
+    if query:
+        books = books.filter(
+            Q(title__icontains=query) |
+            Q(authors__first_name__icontains=query) |
+            Q(authors__last_name__icontains=query)
+        ).distinct()
+
     if request.method == 'POST':
         form = BookForm(request.POST)
         if form.is_valid():
@@ -15,7 +26,14 @@ def library_detail(request, pk):
             return redirect('library_detail', pk=library.pk)
     else:
         form = BookForm()
-    return render(request, 'libraries/library_detail.html', {'library': library, 'form': form})
+
+    return render(request, 'libraries/library_detail.html', {
+        'library': library,
+        'form': form,
+        'books': books,
+        'query': query,
+    })
+
 
 def add_library(request):
     if request.method == 'POST':

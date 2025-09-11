@@ -39,16 +39,16 @@ def edit_book(request, pk):
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
-            return redirect('book_list')
+            return redirect('library_detail', pk=book.libraries.first().pk if book.libraries.exists() else 'library_list')
     else:
         initial_authors = ', '.join([f"{a.first_name} {a.last_name}" for a in book.authors.all()])
         form = BookForm(instance=book, initial={'authors_input': initial_authors})
-
     return render(request, 'books/edit_book.html', {'form': form, 'book': book})
 
 def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
+        library_pk = book.libraries.first().pk if book.libraries.exists() else None
         book.delete()
-        return redirect('book_list')
+        return redirect('library_detail', pk=library_pk if library_pk else 'library_list')
     return render(request, 'books/delete_book.html', {'book': book})
